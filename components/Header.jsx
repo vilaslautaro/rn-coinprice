@@ -1,10 +1,13 @@
+import { useNavigation } from "@react-navigation/native";
 import { useContext } from "react";
 import { StyleSheet, View, TextInput, StatusBar } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { ParamContext } from "../context/SearchParam.context";
 
-export const SearchInput = () => {
+export const Header = () => {
+  const { setParamSearch } = useContext(ParamContext);
 
-  const {setParamSearch} = useContext(ParamContext)
+  const navigation = useNavigation();
 
   return (
     <>
@@ -16,11 +19,20 @@ export const SearchInput = () => {
           placeholder="Search a coin"
           placeholderTextColor="#fff"
         />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Settings")}
+        >
+          <MaterialCommunityIcons
+            name="account-settings"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
       </View>
     </>
   );
 };
-
 
 const styles = StyleSheet.create({
   header: {
@@ -33,13 +45,21 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     marginTop: 10,
+
     fontSize: 25,
   },
   searchInput: {
     color: "#fff",
+    backgroundColor: "#494949",
     borderBottomColor: "#4657ce",
     borderBottomWidth: 1,
     textAlign: "center",
-    width: "40%",
+    width: "70%",
+  },
+  button: {
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    width: 30,
+    height: 30,
   },
 });

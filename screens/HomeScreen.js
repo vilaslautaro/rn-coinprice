@@ -1,11 +1,11 @@
 import { View } from "react-native";
 import CoinsList from "../components/CoinsList";
-import { SearchInput } from "../components/SearchInput";
+import { Header } from "../components/Header";
 
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <SearchInput />
+      <Header />
       <CoinsList />
     </View>
   );
