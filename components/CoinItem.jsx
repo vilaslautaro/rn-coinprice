@@ -1,28 +1,22 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 
-export const CoinItem = ({ coin }) => {
-  const stylesPricePorcentage = coin.price_change_porcentage_24h
+export const CoinItem = ({ image, name, symbol, price, priceChanged }) => {
+  const stylesPricePorcentage = priceChanged
     ? styles.priceUp
     : styles.priceDown;
 
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
-        <Image
-          style={styles.image}
-          alt="image coin"
-          source={{ uri: coin.image }}
-        />
+        <Image style={styles.image} alt="image coin" source={{ uri: image }} />
         <View style={styles.coinNames}>
-          <Text style={styles.name}>{coin.name}</Text>
-          <Text style={styles.symbol}>{coin.symbol}</Text>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.symbol}>{symbol}</Text>
         </View>
       </View>
       <View style={styles.prices}>
-        <Text style={styles.price}>${coin.current_price}</Text>
-        <Text style={stylesPricePorcentage}>
-          {coin.price_change_percentage_24h.toFixed(2)}%
-        </Text>
+        <Text style={styles.price}>${price}</Text>
+        <Text style={stylesPricePorcentage}>{priceChanged.toFixed(2)}%</Text>
       </View>
     </View>
   );

@@ -1,12 +1,15 @@
-import { StyleSheet, Text, View, TextInput, StatusBar } from "react-native";
+import { useContext } from "react";
+import { StyleSheet, View, TextInput, StatusBar } from "react-native";
+import { ParamContext } from "../context/SearchParam.context";
 
-const Header = ({setParamSearch}) => {
+export const SearchInput = () => {
+
+  const {setParamSearch} = useContext(ParamContext)
 
   return (
     <>
       <StatusBar backgroundColor={"#141414"} />
       <View styles={styles.header}>
-        {/*  <Text style={styles.title}>CoinPrice</Text> */}
         <TextInput
           style={styles.searchInput}
           onChangeText={(text) => setParamSearch(text)}
@@ -18,7 +21,6 @@ const Header = ({setParamSearch}) => {
   );
 };
 
-export default Header;
 
 const styles = StyleSheet.create({
   header: {

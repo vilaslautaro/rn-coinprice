@@ -1,45 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text } from "react-native";
-import { fetchCoins } from "../services/fetchCoins";
+import React, { useState, useEffect } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import { coinsFilter } from "../utils/coinsFilter";
+import { getCoins } from "../utils/getCoins";
 import { CoinItem } from "./CoinItem";
 
-const CoinsList = ({ paramSearch }) => {
-  const [refreshing, setRefreshing] = useState(false)
-  const [coins, setCoins] = useState([]);
+const CoinsList = () => {
+  const [refreshing, setRefreshing] = useState(false);
+  const arrayCoins = coinsFilter();
 
-  const apiCall = () => {
-    fetchCoins().then((res) => setCoins(res));
-  }
+  const updatedPrices = () => {
+    setRefreshing(true);
+    getCoins();
+    setRefreshing(false);
+    return;
+  };
 
   useEffect(() => {
-    apiCall()
+    getCoins();
   }, []);
-
-  const coinsFilter = coins.filter((coin) => {
-    const paramLowerCase = paramSearch.toLowerCase();
-    const coinLowerCase = coin.name.toLowerCase();
-    const symbolLowerCase = coin.symbol.toLowerCase()
-    return coinLowerCase.includes(paramLowerCase) || symbolLowerCase.includes(paramLowerCase)
-  });
-
-  const arrayCoins = paramSearch !== "" ? coinsFilter : coins
-
-  if(refreshing) return <Text>Cargando...</Text>
 
   return (
     <FlatList
       data={arrayCoins}
       renderItem={({ item }) => {
-        return <CoinItem coin={item} />;
+        return (
+          <CoinItem
+            image={item.image}
+            name={item.name}
+            symbol={item.symbol}
+            price={item.current_price}
+            priceChanged={coin.price_change_porcentage_24h}
+          />
+        );
       }}
       style={styles.listCoin}
       showsVerticalScrollIndicator={false}
       refreshing={refreshing}
-      onRefresh={() => {
-        setRefreshing(true)
-        apiCall()
-        setRefreshing(false)
-      }}
+      onRefresh={updatedPrices}
     />
   );
 };
