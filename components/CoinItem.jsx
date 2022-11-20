@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 
-const CoinItem = ({coin}) => {
+export const CoinItem = ({coin}) => {
   return (
     <View style={styles.container}>
       <Text text={styles.text}>{coin.name}</Text>
@@ -16,5 +16,3 @@ const styles = StyleSheet.create({
     color: "#fff"
   }
 })
-
-export default CoinItem
