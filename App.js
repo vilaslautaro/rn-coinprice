@@ -1,11 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import CoinItem from "./components/CoinItem";
 
 export default function App() {
+  const [coins, setCoins] = useState();
+
+  const getCoinsOfMarket = async () => {
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+    );
+    const data = await res.json();
+    console.log(data);
+    setCoins(data);
+  };
+
+  useEffect(() => {
+    getCoinsOfMarket();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <FlatList
+        data={coins}
+        renderItem={({ item }) => {
+          return <CoinItem coin={item}/>
+        }}
+      />
     </View>
   );
 }
@@ -13,8 +33,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#141414",
+    alignItems: "center",
   },
 });
