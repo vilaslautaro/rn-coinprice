@@ -1,12 +1,18 @@
 import { StyleSheet, Text, View, TextInput, StatusBar } from "react-native";
 
-const Header = () => {
+const Header = ({setParamSearch}) => {
+
   return (
     <>
       <StatusBar backgroundColor={"#141414"} />
       <View styles={styles.header}>
-        <Text style={styles.title}>CoinPrice</Text>
-        <TextInput style={styles.searchInput} />
+        {/*  <Text style={styles.title}>CoinPrice</Text> */}
+        <TextInput
+          style={styles.searchInput}
+          onChangeText={(text) => setParamSearch(text)}
+          placeholder="Search a coin"
+          placeholderTextColor="#fff"
+        />
       </View>
     </>
   );
@@ -16,6 +22,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   header: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     width: "90%",

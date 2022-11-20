@@ -1,13 +1,25 @@
-import { FlatList, StyleSheet } from "react-native";
 import React from "react";
-import getCoins from "../hooks/getCoins";
+import { FlatList, StyleSheet } from "react-native";
+import { getCoins } from "../hooks/getCoins";
 import { CoinItem } from "./CoinItem";
 
-const CoinsList = () => {
+const CoinsList = ({ paramSearch }) => {
   const coins = getCoins();
+
+  const coinsFilter = coins.filter((coin) => {
+    const paramLowerCase = paramSearch.toLowerCase();
+    const coinLowerCase = coin.name.toLowerCase();
+    const symbolLowerCase = coin.symbol.toLowerCase()
+    return coinLowerCase.includes(paramLowerCase) || symbolLowerCase.includes(paramLowerCase)
+  });
+
+  const arrayCoins = paramSearch !== "" ? coinsFilter : coins
+  console.log(arrayCoins)
+  console.log(paramSearch)
+
   return (
     <FlatList
-      data={coins}
+      data={arrayCoins}
       renderItem={({ item }) => {
         return <CoinItem coin={item} />;
       }}
@@ -17,7 +29,7 @@ const CoinsList = () => {
   );
 };
 
-export default CoinsList;
+export default React.memo(CoinsList);
 
 const styles = StyleSheet.create({
   listCoin: {
