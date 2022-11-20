@@ -1,18 +1,12 @@
-import { StyleSheet, View, FlatList } from "react-native";
-import { CoinItem } from "./components/CoinItem";
-import getCoins from "./hooks/getCoins";
+import { StyleSheet, View } from "react-native";
+import CoinsList from "./components/CoinsList";
+import Header from "./components/Header";
 
 export default function App() {
-  const coins = getCoins();
-
   return (
     <View style={styles.container}>
-      <FlatList
-        data={coins}
-        renderItem={({ item }) => {
-          return <CoinItem coin={item} />;
-        }}
-      />
+      <Header />
+      <CoinsList />
     </View>
   );
 }
@@ -23,4 +17,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#141414",
     alignItems: "center",
   },
+ 
 });
