@@ -1,10 +1,19 @@
-import React from "react";
-import { FlatList, StyleSheet } from "react-native";
-import { getCoins } from "../hooks/getCoins";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text } from "react-native";
+import { fetchCoins } from "../services/fetchCoins";
 import { CoinItem } from "./CoinItem";
 
 const CoinsList = ({ paramSearch }) => {
-  const coins = getCoins();
+  const [refreshing, setRefreshing] = useState(false)
+  const [coins, setCoins] = useState([]);
+
+  const apiCall = () => {
+    fetchCoins().then((res) => setCoins(res));
+  }
+
+  useEffect(() => {
+    apiCall()
+  }, []);
 
   const coinsFilter = coins.filter((coin) => {
     const paramLowerCase = paramSearch.toLowerCase();
@@ -14,8 +23,8 @@ const CoinsList = ({ paramSearch }) => {
   });
 
   const arrayCoins = paramSearch !== "" ? coinsFilter : coins
-  console.log(arrayCoins)
-  console.log(paramSearch)
+
+  if(refreshing) return <Text>Cargando...</Text>
 
   return (
     <FlatList
@@ -25,6 +34,12 @@ const CoinsList = ({ paramSearch }) => {
       }}
       style={styles.listCoin}
       showsVerticalScrollIndicator={false}
+      refreshing={refreshing}
+      onRefresh={() => {
+        setRefreshing(true)
+        apiCall()
+        setRefreshing(false)
+      }}
     />
   );
 };
